@@ -79,7 +79,7 @@ void loop() {
             client.print("Click <a href=\"/H-btn\">here</a> turn the built in LED on<br>");
             client.print("Click <a href=\"/L-btn\">here</a> turn the built in LED off<br>");
             client.print("Repeatedly click <a href=\"/H-vibe\">here</a>  to step through fading of pin 5 LED<br>");
-            client.print("Click <a href=\"/L-vibe\">here</a> turn the LED on pin 5 off<br>"); 
+            client.print("Click <a href=\"/L-vibe-reset\">here</a> turn the LED on pin 5 off<br>"); 
 /*          The above provides a web page hosted by the MKR1000
             You can connect to it by pointing a web browser to the IP address
             which will be displayed in serial monitor.
@@ -112,8 +112,13 @@ void loop() {
           pulse();                                  // GET /H-vibe sends new brightness level to pin 5 LED (see void pulse() below)
         }
         if (currentLine.endsWith("GET /L-vibe")) {
-          digitalWrite(vibepin, LOW);               // GET /L-vibe resets the pin 5 LED
           brightness = 0;
+          analogWrite(vibepin, brightness);               // GET /L-vibe basically does nothing
+                                                          // it just writes a static brightness to pin 5 LED
+        }
+        if (currentLine.endsWith("GET /L-vibe-reset")) {
+          brightness = 0;
+          analogWrite(vibepin, brightness);               // GET /L-vibe resets the pin 5 LED
         }
       }
     }
@@ -156,4 +161,3 @@ void printWifiStatus() {
   Serial.print("To see this page in action, open a browser to http://");
   Serial.println(ip);
 }
-
