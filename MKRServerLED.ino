@@ -19,7 +19,7 @@ int keyIndex = 0;               // your network key Index number (needed only fo
 int ledpin = 6;           //The built in LED pin on the MKR1000
 int vibepin = 5;          //A pin to which an LED will be connected for  
 int brightness = 0;       // how bright the LED is
-int fadeAmount = 51;      // how many points to fade the LED by
+int fadeAmount = 17;      // how many points to fade the LED by
 bool val = true;
  
 int status = WL_IDLE_STATUS;
@@ -79,7 +79,7 @@ void loop() {
             client.print("Click <a href=\"/H-btn\">here</a> turn the built in LED on<br>");
             client.print("Click <a href=\"/L-btn\">here</a> turn the built in LED off<br>");
             client.print("Repeatedly click <a href=\"/H-vibe\">here</a>  to step through fading of pin 5 LED<br>");
-            client.print("Click <a href=\"/L-vibe-reset\">here</a> turn the LED on pin 5 off<br>"); 
+            
 /*          The above provides a web page hosted by the MKR1000
             You can connect to it by pointing a web browser to the IP address
             which will be displayed in serial monitor.
@@ -111,15 +111,7 @@ void loop() {
         if (currentLine.endsWith("GET /H-vibe")) {
           pulse();                                  // GET /H-vibe sends new brightness level to pin 5 LED (see void pulse() below)
         }
-        if (currentLine.endsWith("GET /L-vibe")) {
-          brightness = 0;
-          analogWrite(vibepin, brightness);               // GET /L-vibe basically does nothing
-                                                          // it just writes a static brightness to pin 5 LED
-        }
-        if (currentLine.endsWith("GET /L-vibe-reset")) {
-          brightness = 0;
-          analogWrite(vibepin, brightness);               // GET /L-vibe resets the pin 5 LED
-        }
+
       }
     }
     // close the connection:
