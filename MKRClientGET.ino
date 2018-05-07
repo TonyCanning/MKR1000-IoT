@@ -11,7 +11,7 @@
 
 
 char ssid[] = "YOURSSID";      //  your WiFi network SSID (name)
-char pass[] = "YOURPASS";       // your WiFi network key
+char pass[] = "YOURPASSWORD";       // your WiFi network key
 int keyIndex = 0;               // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
@@ -62,12 +62,15 @@ void loop() {
      vibeState = 1;  // set vibe state
      sendVibeChangeH();  // send http GET request for switch state change
    } 
+ 
    if (digitalRead(vibePin) == LOW && vibeState == 1) {
      digitalWrite(ledPin, LOW);  // turn off mrk1000 client led
      Serial.println("MKR vibe off");  // print vibe sensor status
      vibeState = 0;  // set vibe state
-     sendVibeChangeL(); // send http GET request for switch state change
+ //  We only need to change brightness on the Server LED when sensing movement
+ //  so there is only an action here to change client settings and variables
    }
+ 
 }
 
 // Sent http GET request when sensor state changes
@@ -80,7 +83,7 @@ void sendButtonChangeL() {
       //Make a HTTP request to set state variable 1
       client.println(" HTTP/1.1");
       client.println("Host: 192.168.0.16"); // you need to change this to the MKR server's IP Address
-      client.print("GET /L-btn");  //This sends GET request. You can also go to your browser at 
+      client.println("GET /L-btn");  //This sends GET request. You can also go to your browser at 
                                    //the server's IP address and see available links to perform the same actions as 
                                    //the client MKR buttons
       client.println("Content-Type: text/html");
@@ -109,7 +112,7 @@ void sendButtonChangeH() {
       //Make a HTTP request to set state variable 1
       client.println(" HTTP/1.1");
       client.println("Host: 192.168.0.16");
-      client.print("GET /H-btn");  
+      client.println("GET /H-btn");  
       client.println("Content-Type: text/html");
       client.print("Client Button State = ");
       client.println(buttonState); 
@@ -137,7 +140,7 @@ void sendVibeChangeH() {
       //Make a HTTP request to set state variable 1
       client.println(" HTTP/1.1");
       client.println("Host: 192.168.0.16");
-      client.print("GET /H-vibe");  
+      client.println("GET /H-vibe");  
       client.println("Content-Type: text/html");
       client.print("Client Vibration State = ");
       client.println(vibeState);  
@@ -156,33 +159,7 @@ void sendVibeChangeH() {
   }
 }
 
-void sendVibeChangeL() {
 
-  if (client.connect(ISY, 80)) { //check if connection to MKR server is made
-      
-      Serial.println("Connected");
-      
-      //Make a HTTP request to set state variable 1
-      client.println(" HTTP/1.1");
-      client.println("Host: 192.168.0.16");
-      client.print("GET /L-vibe");  
-      client.println("Content-Type: text/html");
-      client.print("Client Vibration State = ");
-      client.println(vibeState); 
-      
-      client.println("Authorization: Basic xxxxx");  //send authorization header (encoded at base64)  
-      client.println();
-      
-      //Print variable change
-      Serial.print("Variable Changed to "); 
-      Serial.println(vibeState); 
-      
-      listenToClient();   //Listen for MKR server response to previous request
-       }
-      else {
-    Serial.println("Connection Failed");
-  }
-}
 
 // listen for and print response from MKR server
 void listenToClient() {
