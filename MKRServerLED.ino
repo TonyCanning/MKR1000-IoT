@@ -4,7 +4,9 @@
 #include <WiFiSSLClient.h>
 #include <WiFiUdp.h>
 /* Tony Canning 2018/5/6
- * Derivative from 
+ * Derivative from Dr. Charif Mahmoudi's work here:
+ * https://www.hackster.io/charifmahmoudi/arduino-mkr1000-getting-started-08bb4a
+ * Where he notes:
  * This example is modified from the original file 
  * https://github.com/arduino-libraries/WiFi101/blob/master/examples/SimpleWebServerWiFi/SimpleWebServerWiFi.ino
  */
