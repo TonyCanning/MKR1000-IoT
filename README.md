@@ -17,4 +17,4 @@ Communication over a local network using MKR1000
 1 x dose of forgiveness for my limited coding ability
 
 # How to:
-Visit 
+Visit https://www.instructables.com/id/MKR1000-IoT-Clientserver-Communications/ to see instructions (If you're not so familiar with Arduino)
